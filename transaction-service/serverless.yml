@@ -13,12 +13,15 @@ provider:
   region: ap-south-1
   environment:
     TRANSACTIONS_TABLE_NAME: ${self:custom.TransactionsTable.name}
+    BRANCHES_TABLE_NAME: ${self:custom.BranchesTable.name}
   iamRoleStatements:
     - ${file(iam/TransactionsTableIAM.yml):TransactionsTableIAM}
+    - ${file(iam/BranchesTableIAM.yml):BranchesTableIAM}
 
 resources:
   Resources:
     TransactionsTable: ${file(resources/TransactionsTable.yml):TransactionsTable}
+    BranchesTable: ${file(resources/BranchesTable.yml):BranchesTable}
   
 functions:
   createTransaction:
@@ -33,5 +36,8 @@ custom:
   TransactionsTable:
     name: !Ref TransactionsTable 
     arn: !GetAtt TransactionsTable.Arn
+  BranchesTable:
+    name: !Ref BranchesTable 
+    arn: !GetAtt BranchesTable.Arn
   bundle:
     linting: false
