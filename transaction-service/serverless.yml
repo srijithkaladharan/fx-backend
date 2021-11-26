@@ -36,6 +36,13 @@ functions:
       - http:
           method: POST
           path: /createTransaction
+          
+  getTransaction:
+    handler: src/handlers/getTransaction.handler
+    events:
+      - http:
+          method: GET
+          path: /getTransaction/{id}
 
 
 custom:
