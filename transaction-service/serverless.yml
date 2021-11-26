@@ -14,14 +14,20 @@ provider:
   environment:
     TRANSACTIONS_TABLE_NAME: ${self:custom.TransactionsTable.name}
     BRANCHES_TABLE_NAME: ${self:custom.BranchesTable.name}
+    EMPLOYEES_TABLE_NAME: ${self:custom.EmployeesTable.name}
+    RATES_TABLE_NAME: ${self:custom.RatesTable.name}
   iamRoleStatements:
     - ${file(iam/TransactionsTableIAM.yml):TransactionsTableIAM}
     - ${file(iam/BranchesTableIAM.yml):BranchesTableIAM}
+    - ${file(iam/EmployeesTableIAM.yml):EmployeesTableIAM}
+    - ${file(iam/RatesTableIAM.yml):RatesTableIAM}
 
 resources:
   Resources:
     TransactionsTable: ${file(resources/TransactionsTable.yml):TransactionsTable}
     BranchesTable: ${file(resources/BranchesTable.yml):BranchesTable}
+    EmployeesTable: ${file(resources/EmployeesTable.yml):EmployeesTable}
+    RatesTable: ${file(resources/RatesTable.yml):RatesTable}
   
 functions:
   createTransaction:
@@ -39,5 +45,11 @@ custom:
   BranchesTable:
     name: !Ref BranchesTable 
     arn: !GetAtt BranchesTable.Arn
+  EmployeesTable:
+    name: !Ref EmployeesTable
+    arn: !GetAtt EmployeesTable.Arn
+  RatesTable:
+    name: !Ref RatesTable
+    arn: !GetAtt RatesTable.Arn
   bundle:
     linting: false
