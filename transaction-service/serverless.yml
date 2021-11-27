@@ -36,14 +36,30 @@ functions:
       - http:
           method: POST
           path: /createTransaction
-          
+
   getTransaction:
     handler: src/handlers/getTransaction.handler
     events:
       - http:
           method: GET
-          path: /getTransaction/{id}
+          path: /transaction/{id}
 
+  getTransactionsByStatus:
+    handler: src/handlers/getTransactionsByStatus.handler
+    events:
+      - http:
+          method: GET
+          path: /transactions/{status}
+
+  getTransactionsByStatusAndBranchId:
+    handler: src/handlers/getTransactionsByStatusAndBranchId.handler
+    events:
+      - http:
+          method: GET
+          path: /transactions
+          request:
+            template:
+              application/json: '{ "status" : "$input.params(''status'')", "branchId": "$input.params(''branchId'')" }'
 
 custom:
   TransactionsTable:

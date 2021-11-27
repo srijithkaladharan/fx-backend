@@ -8,3 +8,4 @@ TransactionsTableIAM:
     - dynamodb:Query
   Resource:
     - ${self:custom.TransactionsTable.arn}
+    - !Join ['/', [ '${self:custom.TransactionsTable.arn}', 'index', 'statusAndBranchId' ]]

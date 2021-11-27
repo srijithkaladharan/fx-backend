@@ -6,6 +6,19 @@ TransactionsTable:
     AttributeDefinitions:
       - AttributeName: id
         AttributeType: S
+      - AttributeName: status
+        AttributeType: S
+      - AttributeName: branchId
+        AttributeType: S
     KeySchema:
       - AttributeName: id
         KeyType: HASH
+    GlobalSecondaryIndexes:
+      - IndexName: statusAndBranchId
+        KeySchema:
+          - AttributeName: status
+            KeyType: HASH
+          - AttributeName: branchId
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
