@@ -8,3 +8,4 @@ EmployeesTableIAM:
     - dynamodb:Query
   Resource:
     - ${self:custom.EmployeesTable.arn}
+    - !Join ['/', ['${self:custom.EmployeesTable.arn}', 'index', 'emailIndex']]

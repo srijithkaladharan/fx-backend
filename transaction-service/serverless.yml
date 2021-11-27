@@ -75,6 +75,16 @@ functions:
           method: GET
           path: /branch/{id}
 
+  getEmployeeInformation:
+    handler: src/handlers/getEmployeeInformation.handler
+    events:
+      - http:
+          method: GET
+          path: /user
+          request:
+            template:
+              application/json: '{ "email" : "$input.params(''email'')" }'
+
 custom:
   TransactionsTable:
     name: !Ref TransactionsTable 

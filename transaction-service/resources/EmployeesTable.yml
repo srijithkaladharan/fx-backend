@@ -6,6 +6,15 @@ EmployeesTable:
     AttributeDefinitions:
       - AttributeName: id
         AttributeType: S
+      - AttributeName: email
+        AttributeType: S
     KeySchema:
       - AttributeName: id
         KeyType: HASH
+    GlobalSecondaryIndexes:
+      - IndexName: emailIndex
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        Projection:
+          ProjectionType: ALL
