@@ -68,6 +68,13 @@ functions:
           method: PATCH
           path: /transaction/{id}/status
 
+  getBranchInformation:
+    handler: src/handlers/getBranchInformation.handler
+    events:
+      - http:
+          method: GET
+          path: /branch/{id}
+
 custom:
   TransactionsTable:
     name: !Ref TransactionsTable 
