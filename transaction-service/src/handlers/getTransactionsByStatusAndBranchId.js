@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
 import { STATUSES } from '../lib/models/createTransaction.model';
+import { isStatusValid } from '../lib/validateConstants';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -9,8 +10,8 @@ async function getTransactionsByStatusAndBranchId(event, context) {
     const { status, branchId } = event.queryStringParameters;
     let transactions;
 
-    const isStatusValid = STATUSES.hasOwnProperty(status.toUpperCase());
-    if (!isStatusValid || branchId === undefined || branchId === null) {
+    const checkStatus = isStatusValid(status);
+    if (!checkStatus || branchId === undefined || branchId === null) {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: "Invalid Value in Path Params" }),
@@ -19,8 +20,7 @@ async function getTransactionsByStatusAndBranchId(event, context) {
 
     const params = {
         TableName: process.env.TRANSACTIONS_TABLE_NAME,
-        IndexName: 'statusAndBranchId',
-        KeyConditionExpression: '#status = :status AND #branchId = :branchId',
+        FilterExpression: '#status = :status AND #branchId = :branchId',
         ExpressionAttributeValues: {
             ':status': STATUSES[status.toUpperCase()],
             ':branchId': branchId
@@ -32,7 +32,7 @@ async function getTransactionsByStatusAndBranchId(event, context) {
     };
 
     try {
-        let result = await dynamodb.query(params).promise();
+        let result = await dynamodb.scan(params).promise();
         transactions = result.Items;
     }
     catch (err) {

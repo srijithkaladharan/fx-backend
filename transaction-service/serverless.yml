@@ -61,6 +61,13 @@ functions:
             template:
               application/json: '{ "status" : "$input.params(''status'')", "branchId": "$input.params(''branchId'')" }'
 
+  updateTransactionStatus:
+    handler: src/handlers/updateTransactionStatus.handler
+    events:
+      - http:
+          method: PATCH
+          path: /transaction/{id}/status
+
 custom:
   TransactionsTable:
     name: !Ref TransactionsTable 

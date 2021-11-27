@@ -13,12 +13,12 @@ TransactionsTable:
     KeySchema:
       - AttributeName: id
         KeyType: HASH
-    GlobalSecondaryIndexes:
-      - IndexName: statusAndBranchId
-        KeySchema:
-          - AttributeName: status
-            KeyType: HASH
-          - AttributeName: branchId
-            KeyType: RANGE
-        Projection:
-          ProjectionType: ALL
+    # GlobalSecondaryIndexes:
+    #   - IndexName: statusAndBranchId
+    #     KeySchema:
+    #       - AttributeName: status
+    #         KeyType: HASH
+    #       - AttributeName: branchId
+    #         KeyType: RANGE
+    #     Projection:
+    #       ProjectionType: ALL

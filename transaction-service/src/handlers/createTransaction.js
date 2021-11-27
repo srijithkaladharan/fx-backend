@@ -4,7 +4,8 @@ import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
 import validator from '@middy/validator';
 import createTransactionSchema from '../lib/schema/createTransactionSchema';
-import { POSITIONS, STATUSES } from '../lib/models/createTransaction.model';
+import { isPositionValid } from '../lib/validateConstants';
+import { STATUSES, POSITIONS } from '../lib/models/createTransaction.model';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -13,9 +14,9 @@ async function createTransaction(event, context) {
   const transactionDetails = event.body;
   const now = new Date();
 
-  const isPositionValid = POSITIONS.hasOwnProperty(transactionDetails.position.toUpperCase());
+  const checkPosition = isPositionValid(transactionDetails.position);
 
-  if (!isPositionValid) {
+  if (!checkPosition) {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: 'Invalid Position' }),
@@ -32,10 +33,15 @@ async function createTransaction(event, context) {
     rate: transactionDetails.rate,
     amount: transactionDetails.amount,
     branchId: transactionDetails.branchId,
-    submittedBy: transactionDetails.submittedBy,
     status: STATUSES["REQUESTED"],
-    reason: null
-  }
+    timeline: [{
+      event: STATUSES["REQUESTED"],
+      empId: transactionDetails.submittedBy,
+      at: now.toISOString(),
+      reason: "Requested on behalf of client"
+    }],
+    lastUpdatedAt: now.toISOString()
+  };
 
   try {
     await dynamodb.put({

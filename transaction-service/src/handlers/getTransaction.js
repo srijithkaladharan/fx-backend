@@ -16,6 +16,10 @@ export async function getTransactionById(id) {
         transaction = result.Item;
     }
     catch (err) {
+        throw new createError.InternalServerError(err);
+    }
+
+    if (!transaction) {
         throw new createError.NotFound(`Transaction with ${id} not found!`);
     }
 

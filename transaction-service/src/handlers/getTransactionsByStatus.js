@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
 import { STATUSES } from '../lib/models/createTransaction.model';
+import { isStatusValid } from '../lib/validateConstants';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -9,8 +10,8 @@ async function getTransactionsByStatus(event, context) {
     const { status } = event.pathParameters;
     let transactions;
 
-    const isStatusValid = STATUSES.hasOwnProperty(status.toUpperCase());
-    if (!isStatusValid) {
+    const checkStatus = isStatusValid(status);
+    if (!checkStatus) {
         return {
             statusCode: 400,
             body: JSON.stringify({ error: "Invalid Status Value!" }),
@@ -19,8 +20,7 @@ async function getTransactionsByStatus(event, context) {
 
     const params = {
         TableName: process.env.TRANSACTIONS_TABLE_NAME,
-        IndexName: 'statusAndBranchId',
-        KeyConditionExpression: '#status = :status',
+        FilterExpression: '#status = :status',
         ExpressionAttributeValues: {
             ':status': STATUSES[status.toUpperCase()],
         },
@@ -30,7 +30,7 @@ async function getTransactionsByStatus(event, context) {
     };
 
     try {
-        let result = await dynamodb.query(params).promise();
+        let result = await dynamodb.scan(params).promise();
         transactions = result.Items;
     }
     catch (err) {
