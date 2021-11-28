@@ -1,0 +1,24 @@
+ClientsTable: 
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: ClientsTable-${self:provider.stage}
+    BillingMode: PAY_PER_REQUEST
+    AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      - AttributeName: branchId
+        AttributeType: S
+      - AttributeName: status
+        AttributeType: S
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+    GlobalSecondaryIndexes:
+      - IndexName: branchIdAndStatus
+        KeySchema:
+          - AttributeName: branchId
+            KeyType: HASH
+          - AttributeName: status
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL

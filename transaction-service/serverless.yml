@@ -16,11 +16,13 @@ provider:
     BRANCHES_TABLE_NAME: ${self:custom.BranchesTable.name}
     EMPLOYEES_TABLE_NAME: ${self:custom.EmployeesTable.name}
     RATES_TABLE_NAME: ${self:custom.RatesTable.name}
+    CLIENTS_TABLE_NAME: ${self:custom.ClientsTable.name}
   iamRoleStatements:
     - ${file(iam/TransactionsTableIAM.yml):TransactionsTableIAM}
     - ${file(iam/BranchesTableIAM.yml):BranchesTableIAM}
     - ${file(iam/EmployeesTableIAM.yml):EmployeesTableIAM}
     - ${file(iam/RatesTableIAM.yml):RatesTableIAM}
+    - ${file(iam/ClientsTableIAM.yml):ClientsTableIAM}
 
 resources:
   Resources:
@@ -28,6 +30,7 @@ resources:
     BranchesTable: ${file(resources/BranchesTable.yml):BranchesTable}
     EmployeesTable: ${file(resources/EmployeesTable.yml):EmployeesTable}
     RatesTable: ${file(resources/RatesTable.yml):RatesTable}
+    ClientsTable: ${file(resources/ClientsTable.yml):ClientsTable}
   
 functions:
   createTransaction:
@@ -85,6 +88,16 @@ functions:
             template:
               application/json: '{ "email" : "$input.params(''email'')" }'
 
+  getActiveClientsByBranchId:
+    handler: src/handlers/getActiveClientsByBranchId.handler
+    events:
+      - http:
+          method: GET
+          path: /client
+          request:
+            template:
+              application/json: '{ "branchId" : "$input.params(''branchId'')", "status": "$input.params(''status'')" }'
+
 custom:
   TransactionsTable:
     name: !Ref TransactionsTable 
@@ -98,5 +111,8 @@ custom:
   RatesTable:
     name: !Ref RatesTable
     arn: !GetAtt RatesTable.Arn
+  ClientsTable:
+    name: !Ref ClientsTable
+    arn: !GetAtt ClientsTable.Arn
   bundle:
     linting: false
