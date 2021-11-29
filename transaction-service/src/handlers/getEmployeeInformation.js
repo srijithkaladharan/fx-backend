@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
+// import sendErrorResponse from '../lib/sendErrorResponse';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -39,5 +40,6 @@ async function getEmployeeInformation(event, context) {
         body: JSON.stringify({ data: empInfo }),
     };
 }
+
 
 export const handler = commonMiddleware(getEmployeeInformation);

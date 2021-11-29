@@ -30,8 +30,8 @@ async function createTransaction(event, context) {
     position: POSITIONS[transactionDetails.position.toUpperCase()],
     currency: transactionDetails.currency,
     fxRateFromHq: transactionDetails.fxRateFromHq,
-    rate: transactionDetails.rate,
-    amount: transactionDetails.amount,
+    quantity: transactionDetails.quantity,
+    amount: (transactionDetails.fxRateFromHq + transactionDetails.spread) * transactionDetails.quantity,
     branchId: transactionDetails.branchId,
     status: STATUSES["REQUESTED"],
     timeline: [{

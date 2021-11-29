@@ -10,7 +10,7 @@ async function getActiveClientsByBranchId(event, context) {
 
     const params = {
         TableName: process.env.CLIENTS_TABLE_NAME,
-        IndexName: "branchIdAndStatus",
+        IndexName: "statusAndBranchId",
         KeyConditionExpression: '#status = :status AND #branchId = :branchId',
         ExpressionAttributeValues: {
             ':status': status.toUpperCase(),
@@ -29,7 +29,6 @@ async function getActiveClientsByBranchId(event, context) {
     catch (err) {
         throw new createError.InternalServerError(err);
     }
-    console.log("CLIENTS", clients);
 
     return {
         statusCode: 200,

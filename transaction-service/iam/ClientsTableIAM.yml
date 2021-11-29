@@ -8,4 +8,4 @@ ClientsTableIAM:
     - dynamodb:Query
   Resource:
     - ${self:custom.ClientsTable.arn}
-    - !Join ['/', ['${self:custom.ClientsTable.arn}', 'index', 'branchIdAndStatus']]
+    - !Join ['/', ['${self:custom.ClientsTable.arn}', 'index', 'statusAndBranchId']]

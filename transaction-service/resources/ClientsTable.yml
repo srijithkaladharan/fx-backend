@@ -14,11 +14,11 @@ ClientsTable:
       - AttributeName: id
         KeyType: HASH
     GlobalSecondaryIndexes:
-      - IndexName: branchIdAndStatus
+      - IndexName: statusAndBranchId
         KeySchema:
-          - AttributeName: branchId
-            KeyType: HASH
           - AttributeName: status
+            KeyType: HASH
+          - AttributeName: branchId
             KeyType: RANGE
         Projection:
           ProjectionType: ALL

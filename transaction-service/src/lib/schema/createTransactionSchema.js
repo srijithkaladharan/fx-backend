@@ -16,11 +16,11 @@ const schema = {
                 fxRateFromHq: {
                     type: 'number',
                 },
-                rate: {
+                spread: {
                     type: 'number',
                 },
-                amount: {
-                    type: 'number',
+                quantity: {
+                    type: 'number'
                 },
                 branchId: {
                     type: 'string',
@@ -34,8 +34,8 @@ const schema = {
                 'position',
                 'currency',
                 'fxRateFromHq',
-                'rate',
-                'amount',
+                'quantity',
+                'spread',
                 'branchId',
                 'submittedBy'
             ],

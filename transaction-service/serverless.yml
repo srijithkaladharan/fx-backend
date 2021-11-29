@@ -38,7 +38,8 @@ functions:
     events:
       - http:
           method: POST
-          path: /createTransaction
+          path: /transaction
+          cors: true
 
   getTransaction:
     handler: src/handlers/getTransaction.handler
@@ -46,6 +47,7 @@ functions:
       - http:
           method: GET
           path: /transaction/{id}
+          cors: true
 
   getTransactionsByStatus:
     handler: src/handlers/getTransactionsByStatus.handler
@@ -53,6 +55,7 @@ functions:
       - http:
           method: GET
           path: /transactions/{status}
+          cors: true
 
   getTransactionsByStatusAndBranchId:
     handler: src/handlers/getTransactionsByStatusAndBranchId.handler
@@ -63,6 +66,7 @@ functions:
           request:
             template:
               application/json: '{ "status" : "$input.params(''status'')", "branchId": "$input.params(''branchId'')" }'
+          cors: true
 
   updateTransactionStatus:
     handler: src/handlers/updateTransactionStatus.handler
@@ -70,6 +74,7 @@ functions:
       - http:
           method: PATCH
           path: /transaction/{id}/status
+          cors: true
 
   getBranchInformation:
     handler: src/handlers/getBranchInformation.handler
@@ -77,6 +82,7 @@ functions:
       - http:
           method: GET
           path: /branch/{id}
+          cors: true
 
   getEmployeeInformation:
     handler: src/handlers/getEmployeeInformation.handler
@@ -87,6 +93,7 @@ functions:
           request:
             template:
               application/json: '{ "email" : "$input.params(''email'')" }'
+          cors: true
 
   getActiveClientsByBranchId:
     handler: src/handlers/getActiveClientsByBranchId.handler
@@ -97,6 +104,15 @@ functions:
           request:
             template:
               application/json: '{ "branchId" : "$input.params(''branchId'')", "status": "$input.params(''status'')" }'
+          cors: true
+
+  getAllRates:
+    handler: src/handlers/getAllRates.handler
+    events:
+      - http:
+          method: GET
+          path: /rates
+          cors: true
 
 custom:
   TransactionsTable:

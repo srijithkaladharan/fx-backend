@@ -6,10 +6,10 @@ TransactionsTable:
     AttributeDefinitions:
       - AttributeName: id
         AttributeType: S
-      - AttributeName: status
-        AttributeType: S
-      - AttributeName: branchId
-        AttributeType: S
+      # - AttributeName: status
+      #   AttributeType: S
+      # - AttributeName: branchId
+      #   AttributeType: S
     KeySchema:
       - AttributeName: id
         KeyType: HASH
